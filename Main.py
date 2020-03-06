@@ -6,6 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from gui.widget.Widget import Widget
 from kivy.config import Config
 import GetCalendar
+import GetWeather
 
 """
     :author Luan Ta
@@ -22,7 +23,7 @@ import GetCalendar
 """
 WINDOW_WIDTH = 1080
 WINDOW_HEIGHT = 720
-UPDATE_INTERVAL = 1000  # in milliseconds
+UPDATE_INTERVAL = 60  # in seconds
 
 
 class Main(App):
@@ -32,18 +33,15 @@ class Main(App):
         Config.set('graphics', 'width', str(WINDOW_WIDTH))
         Config.set('graphics', 'height', str(WINDOW_HEIGHT))
         self.layout = BoxLayout(orientation='vertical', size=(WINDOW_WIDTH, WINDOW_HEIGHT))
-        self.widget = Widget(self.layout, 3)
-        # widget.change_background(1, 0, 0, 1)
-        self.widget.add_image("gui/hw.PNG", 250, 600, 100, 100)
-        self.current_i = 0
-        Clock.schedule_interval(self.update, 1)
+        self.widget = Widget(self.layout, 2)
+        self.widget.change_background(0, 0.3, 0.5, 1)
+        self.widget.add_image(GetWeather.get_weather_img(), 250, 600, 100, 100)
+        self.update()
+        Clock.schedule_interval(self.update, UPDATE_INTERVAL)
 
     def update(self, *args):
-        self.widget.change_panel_text("Time: " + str(datetime.now().time()), 1)
+        self.widget.change_panel_text(GetWeather.get_weather(), 1)
         self.widget.change_panel_text(GetCalendar.get_events(1), 2)
-        self.current_i += 1
-        if self.current_i >= UPDATE_INTERVAL:
-            Clock.unschedule(self.update)
 
     def build(self):
         return self.layout
@@ -52,8 +50,3 @@ class Main(App):
 if __name__ == '__main__':
     main = Main()
     main.run()
-    # main.widget.change_panel_text(str(datetime.now().time()), 1)
-    # main.widget.update_all_panel()
-    # date_time = DateTimeInput(1)
-
-    # process = TaskProcessor(2000, main.widget, [date_time])
