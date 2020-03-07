@@ -21,6 +21,7 @@ class Widget:
         self.panels = []
         self.num_of_panels = num_of_panels
         self.layout = layout
+        self.image = None
         for i in range(num_of_panels):
             tmp = Label(text="Panel " + str(i + 1) + ": Call change_panel_text()!", markup=True, pos_hint={'top': 1.0})
             self.layout.add_widget(tmp)
@@ -75,7 +76,7 @@ class Widget:
 
     def add_image(self, path: str, pos_x: int, pos_y: int, width: int, height: int):
         """
-        Add an image to this Widget.
+        Add an image to this Widget. Will remove any previous image(s).
         :param path: the absolute/relative path to the image file
         :param pos_x: the X position of this image. Reference point (0,0) is the bottom-left point of the Window.
         :param pos_y: the Y position of this image. Reference point (0,0) is the bottom-left point of the Window.
@@ -83,10 +84,10 @@ class Widget:
         :param height: the height of this image
         """
         if self.panels.__sizeof__() != 0:
-            self.panels[0].add_widget(Image(source=path, pos=(pos_x, pos_y), size=(width, height)))
+            if self.image is not None:
+                self.panels[0].remove_widget(self.image)
+            self.image = Image(source=path, pos=(pos_x, pos_y), size=(width, height))
+            self.panels[0].add_widget(self.image)
         else:
             print("NO PANEL AVAILABLE!")
 
-    def update_all_panel(self):
-        for i in range(self.num_of_panels):
-            self.panels[i].canvas.ask_update()

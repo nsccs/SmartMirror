@@ -35,11 +35,11 @@ class Main(App):
         self.layout = BoxLayout(orientation='vertical', size=(WINDOW_WIDTH, WINDOW_HEIGHT))
         self.widget = Widget(self.layout, 2)
         self.widget.change_background(0, 0.3, 0.5, 1)
-        self.widget.add_image(GetWeather.get_weather_img(), 250, 600, 100, 100)
         self.update()
         Clock.schedule_interval(self.update, UPDATE_INTERVAL)
 
     def update(self, *args):
+        self.widget.add_image(GetWeather.get_weather_img(), 250, 600, 100, 100)
         self.widget.change_panel_text(GetWeather.get_weather(), 1)
         self.widget.change_panel_text(GetCalendar.get_events(1), 2)
 
