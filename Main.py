@@ -5,6 +5,7 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from gui.widget.Widget import Widget
 from kivy.config import Config
+from kivy.core.window import Window
 import GetCalendar
 import GetWeather
 import GetDateTime
@@ -48,4 +49,5 @@ class Main(App):
 
 if __name__ == '__main__':
     main = Main()
+    Window.fullscreen = True
     main.run()
