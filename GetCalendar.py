@@ -9,7 +9,8 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
-def GetEvents(numberOfEvents):
+
+def get_events(num_of_events):
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -32,17 +33,16 @@ def GetEvents(numberOfEvents):
     service = build('calendar', 'v3', credentials=creds)
 
     # Call the Calendar API
-    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
     events_result = service.events().list(calendarId='primary', timeMin=now,
-                                        maxResults=numberOfEvents, singleEvents=True,
-                                        orderBy='startTime').execute()
+                                          maxResults=num_of_events, singleEvents=True,
+                                          orderBy='startTime').execute()
     events = events_result.get('items', [])
-
+    s = ''
     if not events:
-        print('No upcoming events found.')
+        s += 'No upcoming events found.'
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+        s += start + event['summary']
+    return s
 
-
-GetEvents(1)
