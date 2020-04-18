@@ -10,13 +10,13 @@ import GetWeather
 import GetDateTime
 
 """
-    :author Luan Ta
+    :author Luan Ta + Micheal Chung + NSC CS Club
     :version beta - 1.1.0 - 03/08/2020
     Main class of the program. Executes the GUI display.
 """
-WINDOW_WIDTH = 1080
-WINDOW_HEIGHT = 720
-UPDATE_INTERVAL_WEATHER_CALENDER = 3600  # in seconds
+WINDOW_WIDTH = 1920
+WINDOW_HEIGHT = 1080
+UPDATE_INTERVAL_WEATHER_CALENDER = 10  # in seconds
 UPDATE_INTERVAL_TIME = 1  # in seconds
 
 
