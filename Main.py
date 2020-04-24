@@ -27,7 +27,7 @@ class Main(App):
         Config.set('graphics', 'resizable', False)
         Config.set('graphics', 'width', str(WINDOW_WIDTH))
         Config.set('graphics', 'height', str(WINDOW_HEIGHT))
-        self.layout = BoxLayout(orientation='vertical', size=(WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.layout = BoxLayout(orientation='vertical', size=(WINDOW_HEIGHT, WINDOW_WIDTH))
         self.widget = Widget(self.layout, 3)
         self.widget.change_background(0, 0.3, 0.5, 1)
         self.update_calender_weather()
@@ -49,5 +49,5 @@ class Main(App):
 
 if __name__ == '__main__':
     main = Main()
-    Window.fullscreen = True
+    Window.fullscreen = False
     main.run()

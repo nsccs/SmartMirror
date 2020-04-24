@@ -42,7 +42,12 @@ def get_events(num_of_events):
     if not events:
         s += 'No upcoming events found.'
     for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        s += start + event['summary']
+        rawEvent = event['start'].get('dateTime', event['start'].get('date'))
+        
+        dateSplit = rawEvent.split('-', 3)
+        dateSplit[2] = dateSplit[2][0:2]
+        date = dateSplit[0] + "/" + dateSplit[1] + "/" + dateSplit[2]
+        day = datetime.date(int(dateSplit[0]), int(dateSplit[1]), int(dateSplit[2])).strftime('%A')
+                
+        s += str(date) + ' ' + str(day) + ' ' + event['summary']
     return s
-
