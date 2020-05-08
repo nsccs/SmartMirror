@@ -48,6 +48,12 @@ def get_events(num_of_events):
         dateSplit[2] = dateSplit[2][0:2]
         date = dateSplit[0] + "/" + dateSplit[1] + "/" + dateSplit[2]
         day = datetime.date(int(dateSplit[0]), int(dateSplit[1]), int(dateSplit[2])).strftime('%A')
-                
-        s += str(date) + ' ' + str(day) + ' ' + event['summary']
+        eventStartTime = str(int(rawEvent[11:13]) % 12) + rawEvent[13:16]
+        
+        eventHour = int(rawEvent[11:13])
+        if eventHour > 12:
+            eventHour -= 12
+        eventStartTime = str(eventHour) + rawEvent[13:16]
+        
+        s += str(day) + ', ' + str(date) + ' ' + eventStartTime  + ': ' + event['summary'] + '\n'
     return s

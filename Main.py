@@ -7,7 +7,7 @@ from gui.widget.Widget import Widget
 from kivy.config import Config
 from kivy.core.window import Window
 import GetCalendar
-import GetWeather
+from GetWeather import GetWeather
 import GetDateTime
 
 """
@@ -17,7 +17,7 @@ import GetDateTime
 """
 WINDOW_WIDTH = 1920
 WINDOW_HEIGHT = 1080
-UPDATE_INTERVAL_WEATHER_CALENDER = 10  # in seconds
+UPDATE_INTERVAL_WEATHER_CALENDAR = 10  # in seconds
 UPDATE_INTERVAL_TIME = 1  # in seconds
 
 
@@ -27,17 +27,20 @@ class Main(App):
         Config.set('graphics', 'resizable', False)
         Config.set('graphics', 'width', str(WINDOW_WIDTH))
         Config.set('graphics', 'height', str(WINDOW_HEIGHT))
-        self.layout = BoxLayout(orientation='vertical', size=(WINDOW_HEIGHT, WINDOW_WIDTH))
+        self.layout = BoxLayout(orientation='vertical', size=(WINDOW_WIDTH, WINDOW_HEIGHT))
+        
         self.widget = Widget(self.layout, 3)
         self.widget.change_background(0, 0.3, 0.5, 1)
-        self.update_calender_weather()
+        self.update_CALENDAR_weather()
         self.update_time()
+        
         Clock.schedule_interval(self.update_time, UPDATE_INTERVAL_TIME)
-        Clock.schedule_interval(self.update_calender_weather, UPDATE_INTERVAL_WEATHER_CALENDER)
+        Clock.schedule_interval(self.update_CALENDAR_weather, UPDATE_INTERVAL_WEATHER_CALENDAR)
 
-    def update_calender_weather(self, *args):
-        self.widget.add_image(GetWeather.get_weather_img(), 300, 300, 100, 100)
-        self.widget.change_panel_text(GetWeather.get_weather(), 2)
+    def update_CALENDAR_weather(self, *args):
+        weather = GetWeather()
+        self.widget.change_panel_text(weather.get_description() + '\n' + weather.get_temp(), 2)
+        self.widget.add_image(weather.get_icon(), WINDOW_HEIGHT / 2, WINDOW_WIDTH / 3, 200, 200)
         self.widget.change_panel_text(GetCalendar.get_events(5), 3)
 
     def update_time(self, *args):
@@ -49,5 +52,5 @@ class Main(App):
 
 if __name__ == '__main__':
     main = Main()
-    Window.fullscreen = False
+    Window.fullscreen = True
     main.run()
