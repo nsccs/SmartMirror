@@ -2,9 +2,9 @@ from datetime import datetime
 
 from kivy.app import App
 from kivy.clock import Clock
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 from gui.widget.Widget import Widget
 from kivy.config import Config
 from kivy.core.window import Window
@@ -30,32 +30,35 @@ class Main(App):
         Config.set('graphics', 'resizable', False)
         Config.set('graphics', 'width', str(WINDOW_WIDTH))
         Config.set('graphics', 'height', str(WINDOW_HEIGHT))
-        self.layout = StackLayout(size=(WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.layout = StackLayout(size=(WINDOW_WIDTH, WINDOW_HEIGHT), spacing=10, orientation='tb-lr')
         
-        self.weatherLabel = Label(text='abc', color=textColor)
-        #self.weatherImageWidget = Widget(BoxLayout(), 1)
-        self.calendarLabel = Label(text='def', color=textColor)
-        self.timeLabel = Label(text='ghi', color=textColor)
+        self.weatherLabel = Label(text='abc', color=textColor, width=WINDOW_WIDTH, size_hint=(1, 0.33))
+        self.calendarLabel = Label(text='def', color=textColor, width=WINDOW_WIDTH, size_hint=(1, 0.33))
+        self.timeLabel = Label(text='ghi', color=textColor, width=WINDOW_WIDTH, size_hint=(1, 0.33))
         
-        self.layout.add_widget(self.calendarLabel)
-        self.layout.add_widget(self.weatherLabel)
         self.layout.add_widget(self.timeLabel)
+        self.layout.add_widget(self.weatherLabel)
+        self.layout.add_widget(self.calendarLabel)
         
-        #self.update_CALENDAR_weather()
-        #self.update_time()
+        self.update_CALENDAR_weather()
+        self.update_time()
+        
+        #for i in range(25):
+        #btn = Button(text=str(i), width=40 + i * 5, size_hint=(None, 0.15))
+            #self.layout.add_widget(btn)
         
         # Schedule task to refresh the widgets
-        #Clock.schedule_interval(self.update_time, UPDATE_INTERVAL_TIME)
-        #Clock.schedule_interval(self.update_CALENDAR_weather, UPDATE_INTERVAL_WEATHER_CALENDAR)
+        Clock.schedule_interval(self.update_time, UPDATE_INTERVAL_TIME)
+        Clock.schedule_interval(self.update_CALENDAR_weather, UPDATE_INTERVAL_WEATHER_CALENDAR)
 
     def update_CALENDAR_weather(self, *args):
         weather = GetWeather()
-        self.weatherLabel = Label(text=weather.get_description() + '\n' + weather.get_temp(), color=textColor)
+        self.weatherLabel.text = weather.get_description() + '\n' + weather.get_temp()
         #self.widget.add_image(weather.get_icon(), WINDOW_HEIGHT / 2, WINDOW_WIDTH / 3, 200, 200)
-        self.calendarLabel = Label(text=GetCalendar.get_events(5), color=textColor)
+        self.calendarLabel.text = GetCalendar.get_events(5)
 
     def update_time(self, *args):
-        self.timeLabel = Label(text=GetDateTime.get_time(), color=textColor)
+        self.timeLabel.text = GetDateTime.get_time()
 
     def build(self):
         return self.layout
@@ -63,5 +66,5 @@ class Main(App):
 
 if __name__ == '__main__':
     main = Main()
-    #33333333333333333Window.fullscreen = True
+    #Window.fullscreen = True
     main.run()
